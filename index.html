@@ -26,10 +26,10 @@
       <div class="emoji-row" id="emoji-row"></div>
     </section>
 
-    <!-- 打分 -->
-    <section class="paper">
-      <h2 class="paper-title">给自己打个分 <span class="hint">（可跳过）</span></h2>
-      <div class="scores" id="scores"></div>
+    <!-- 往年今日 -->
+    <section class="paper past-card">
+      <h2 class="paper-title">📜 往年今日</h2>
+      <div id="past-today"></div>
     </section>
 
     <!-- 文字 + 图片（合并在一页里） -->
@@ -43,15 +43,15 @@
       <input type="file" id="photo-input" accept="image/*" multiple hidden>
     </section>
 
+    <!-- 打分 -->
+    <section class="paper">
+      <h2 class="paper-title">给自己打个分 <span class="hint">（可跳过）</span></h2>
+      <div class="scores" id="scores"></div>
+    </section>
+
     <div class="save-bar">
       <button class="btn-primary" id="save-btn">保存</button>
     </div>
-
-    <!-- 往年今日 -->
-    <section class="paper past-card">
-      <h2 class="paper-title">📜 往年今日</h2>
-      <div id="past-today"></div>
-    </section>
   </main>
 
   <!-- ============ 热力图视图 ============ -->
@@ -93,6 +93,22 @@
         <span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span>
       </div>
       <div class="calendar" id="calendar"></div>
+    </section>
+  </main>
+
+  <!-- ============ 日记回顾视图 ============ -->
+  <main id="view-entry" class="view">
+    <header class="view-header">
+      <button class="back-btn" id="entry-back">‹</button>
+      <div class="view-title">回顾</div>
+      <button class="btn-primary small" id="entry-edit">编辑</button>
+    </header>
+    <section class="paper entry-paper">
+      <div class="entry-date" id="entry-date"></div>
+      <div class="entry-emoji" id="entry-emoji"></div>
+      <div class="entry-scores" id="entry-scores"></div>
+      <div class="entry-text" id="entry-text"></div>
+      <div class="entry-photos" id="entry-photos"></div>
     </section>
   </main>
 

@@ -22,6 +22,8 @@ let histYear = new Date().getFullYear();
 let histMonth = new Date().getMonth();
 let photoUrls = [];         // 用于释放 objectURL
 let pastPhotoUrls = [];     // 往年今日照片的 objectURL
+let viewingDate = null;     // 回顾视图当前查看的日期
+let entryPhotoUrls = [];    // 回顾视图照片的 objectURL
 
 // ===== 日期工具 =====
 function pad(n) { return String(n).padStart(2, '0'); }
@@ -343,9 +345,73 @@ async function renderCalendar() {
 }
 
 async function openEntry(dateStr) {
-  await loadEntry(dateStr);
-  await renderPastToday();
-  switchView('today');
+  await renderEntryView(dateStr);
+  switchView('entry');
+}
+
+// ===== 日记回顾（总结视图） =====
+async function renderEntryView(dateStr) {
+  viewingDate = dateStr;
+  entryPhotoUrls.forEach(u => URL.revokeObjectURL(u));
+  entryPhotoUrls = [];
+  const entry = await getEntry(dateStr);
+  const d = parseDate(dateStr);
+  const weekdays = ['日', '一', '二', '三', '四', '五', '六'];
+  document.getElementById('entry-date').textContent =
+    `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日 星期${weekdays[d.getDay()]}`;
+
+  const emojiEl = document.getElementById('entry-emoji');
+  const scoresEl = document.getElementById('entry-scores');
+  const textEl = document.getElementById('entry-text');
+  const photosEl = document.getElementById('entry-photos');
+
+  if (!entry) {
+    emojiEl.style.display = 'none';
+    scoresEl.innerHTML = '<div class="past-today">这一天还没有留下记录</div>';
+    textEl.textContent = '';
+    photosEl.innerHTML = '';
+    return;
+  }
+
+  if (entry.emoji) {
+    emojiEl.style.display = '';
+    emojiEl.textContent = entry.emoji;
+  } else {
+    emojiEl.style.display = 'none';
+  }
+
+  scoresEl.innerHTML = '';
+  const dims = Object.keys(entry.scores || {});
+  if (dims.length) {
+    dims.forEach(dim => {
+      const row = document.createElement('div');
+      row.className = 'entry-score-row';
+      const label = document.createElement('span');
+      label.className = 'entry-score-label';
+      label.textContent = dim;
+      const dots = document.createElement('div');
+      dots.className = 'score-dots';
+      for (let i = 1; i <= 5; i++) {
+        const dot = document.createElement('span');
+        dot.className = 'dot' + (i <= entry.scores[dim] ? ' on' : '');
+        dots.appendChild(dot);
+      }
+      row.appendChild(label);
+      row.appendChild(dots);
+      scoresEl.appendChild(row);
+    });
+  }
+
+  textEl.textContent = entry.text || '';
+
+  photosEl.innerHTML = '';
+  (entry.photos || []).forEach(blob => {
+    const url = URL.createObjectURL(blob);
+    entryPhotoUrls.push(url);
+    const img = document.createElement('img');
+    img.src = url;
+    photosEl.appendChild(img);
+  });
 }
 
 // ===== 时光胶囊 =====
@@ -520,7 +586,8 @@ async function switchView(name) {
   }
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.getElementById('view-' + name).classList.add('active');
-  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.view === name));
+  const highlight = name === 'entry' ? 'history' : name;
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.view === highlight));
 
   if (name === 'heatmap') await renderHeatmap();
   if (name === 'capsule') await renderCapsules();
@@ -567,6 +634,15 @@ function bindEvents() {
     histMonth++;
     if (histMonth > 11) { histMonth = 0; histYear++; }
     renderCalendar();
+  });
+
+  // 回顾视图
+  document.getElementById('entry-back').addEventListener('click', () => switchView('history'));
+  document.getElementById('entry-edit').addEventListener('click', async () => {
+    if (!viewingDate) return;
+    await loadEntry(viewingDate);
+    await renderPastToday();
+    switchView('today');
   });
 
   // 胶囊

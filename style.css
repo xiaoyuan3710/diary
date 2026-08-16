@@ -4,9 +4,9 @@
   --paper-line: #e8dcc5;
   --ink: #4a4036;
   --ink-sub: #8a7a68;
-  --accent: #e8875e;
-  --accent-deep: #d06f47;
-  --accent-soft: #f3e3d3;
+  --accent: #86b88e;
+  --accent-deep: #5f8f67;
+  --accent-soft: #e6f0e4;
   --gold: #c9a86a;
   --danger: #c96a5a;
 }
@@ -65,7 +65,7 @@ body {
   top: 14px;
   bottom: 14px;
   width: 1px;
-  background: rgba(208, 111, 71, 0.3);
+  background: rgba(95, 143, 103, 0.35);
 }
 
 .paper-title {
@@ -129,7 +129,7 @@ body {
 .emoji-item.selected {
   background: var(--accent-soft);
   border-color: var(--accent);
-  box-shadow: 0 2px 8px rgba(232, 135, 94, 0.3);
+  box-shadow: 0 2px 8px rgba(134, 184, 142, 0.35);
   transform: translateY(-2px);
 }
 
@@ -182,9 +182,9 @@ body {
   transition: all 0.15s;
 }
 .dot.on {
-  background: linear-gradient(135deg, #f0a17a, var(--accent));
+  background: linear-gradient(135deg, #a9c9ac, var(--accent));
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(232, 135, 94, 0.18);
+  box-shadow: 0 0 0 3px rgba(134, 184, 142, 0.22);
 }
 
 /* ===== 文字 + 图片（日记页） ===== */
@@ -263,7 +263,7 @@ body {
   height: 64px;
   border: 2px dashed #cbb394;
   border-radius: 10px;
-  background: rgba(232, 135, 94, 0.05);
+  background: rgba(134, 184, 142, 0.06);
   color: #c9b394;
   font-size: 28px;
   cursor: pointer;
@@ -280,7 +280,7 @@ body {
 
 /* ===== 按钮 ===== */
 .btn-primary {
-  background: linear-gradient(135deg, #f0a17a, var(--accent-deep));
+  background: linear-gradient(135deg, #a9c9ac, var(--accent-deep));
   color: #fff;
   border: none;
   border-radius: 24px;
@@ -290,7 +290,7 @@ body {
   letter-spacing: 4px;
   cursor: pointer;
   width: 100%;
-  box-shadow: 0 6px 16px rgba(208, 111, 71, 0.35);
+  box-shadow: 0 6px 16px rgba(95, 143, 103, 0.35);
 }
 .btn-primary:active {
   opacity: 0.88;
@@ -510,7 +510,7 @@ body {
   top: 12px;
   bottom: 12px;
   width: 1px;
-  background: rgba(208, 111, 71, 0.3);
+  background: rgba(95, 143, 103, 0.35);
 }
 .capsule-item.locked { opacity: 0.82; }
 .capsule-head {
@@ -653,4 +653,82 @@ body {
   margin-bottom: 12px;
   line-height: 1.8;
 }
+/* ===== 日记回顾（总结视图） ===== */
+.back-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 10px;
+  width: 40px;
+  height: 40px;
+  font-size: 22px;
+  cursor: pointer;
+  color: #e8dcc8;
+}
+.back-btn:active { background: rgba(255, 255, 255, 0.16); }
+.entry-paper {
+  padding: 22px 18px 22px 26px;
+}
+.entry-date {
+  font-size: 14px;
+  color: var(--ink-sub);
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+}
+.entry-emoji {
+  font-size: 42px;
+  text-align: center;
+  margin: 6px 0 18px;
+}
+.entry-scores {
+  margin: 6px 0 18px;
+}
+.entry-score-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 5px 0;
+}
+.entry-score-label {
+  width: 62px;
+  flex-shrink: 0;
+  font-size: 14px;
+  color: var(--ink-sub);
+  letter-spacing: 1px;
+}
+.entry-text {
+  font-size: 16px;
+  line-height: 32px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: var(--ink);
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 31px,
+    rgba(180, 150, 110, 0.28) 31px,
+    rgba(180, 150, 110, 0.28) 32px
+  );
+  padding: 4px 2px;
+  min-height: 60px;
+}
+.entry-text:empty::before {
+  content: '这一天没有写文字';
+  color: #b8a88e;
+}
+.entry-photos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px dashed #dfd1b6;
+}
+.entry-photos img {
+  width: 84px;
+  height: 84px;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
 .hidden { display: none !important; }
