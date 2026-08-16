@@ -1,9 +1,9 @@
 // app.js —— 界面逻辑
 
 // ===== 常量 =====
-const EMOJIS = ['😊', '😌', '😢', '😰', '😠', '😴', '🤩', '🙏'];
+const EMOJIS = ['😊', '🥰', '😌', '😢', '😰', '😠', '😴', '🤩', '🙏'];
 const EMOJI_NAMES = {
-  '😊': '开心', '😌': '平静', '😢': '难过', '😰': '焦虑',
+  '😊': '开心', '🥰': '幸福', '😌': '平静', '😢': '难过', '😰': '焦虑',
   '😠': '生气', '😴': '疲惫', '🤩': '兴奋', '🙏': '感恩'
 };
 const SCORE_DIMENSIONS = ['心情', '精力', '睡眠', '健康', '锻炼'];
@@ -69,19 +69,18 @@ function buildScores() {
     const label = document.createElement('span');
     label.className = 'score-label';
     label.textContent = dim;
-    const stars = document.createElement('div');
-    stars.className = 'score-stars';
-    stars.dataset.dim = dim;
+    const dots = document.createElement('div');
+    dots.className = 'score-dots';
+    dots.dataset.dim = dim;
     for (let i = 1; i <= 5; i++) {
-      const star = document.createElement('span');
-      star.className = 'star';
-      star.textContent = '★';
-      star.dataset.val = i;
-      star.onclick = () => setScore(dim, i);
-      stars.appendChild(star);
+      const dot = document.createElement('span');
+      dot.className = 'dot';
+      dot.dataset.val = i;
+      dot.onclick = () => setScore(dim, i);
+      dots.appendChild(dot);
     }
     row.appendChild(label);
-    row.appendChild(stars);
+    row.appendChild(dots);
     container.appendChild(row);
   });
 }
@@ -151,10 +150,10 @@ function setScore(dim, val) {
 
 function renderScores() {
   document.querySelectorAll('.score-row').forEach(row => {
-    const dim = row.querySelector('.score-stars').dataset.dim;
+    const dim = row.querySelector('.score-dots').dataset.dim;
     const val = state.scores[dim] || 0;
-    row.querySelectorAll('.star').forEach(star => {
-      star.classList.toggle('on', Number(star.dataset.val) <= val);
+    row.querySelectorAll('.dot').forEach(dot => {
+      dot.classList.toggle('on', Number(dot.dataset.val) <= val);
     });
   });
 }
@@ -280,30 +279,37 @@ async function renderHeatmap() {
   const container = document.getElementById('heatmap');
   container.innerHTML = '';
 
-  const firstDay = new Date(heatYear, 0, 1);
-  const firstWeekday = firstDay.getDay();
-  for (let i = 0; i < firstWeekday; i++) {
-    const empty = document.createElement('div');
-    empty.className = 'heat-cell empty';
-    container.appendChild(empty);
-  }
+  for (let m = 0; m < 12; m++) {
+    const monthLabel = document.createElement('div');
+    monthLabel.className = 'heat-month-label';
+    monthLabel.textContent = (m + 1) + '月';
+    container.appendChild(monthLabel);
 
-  const daysInYear = isLeap(heatYear) ? 366 : 365;
-  for (let i = 0; i < daysInYear; i++) {
-    const d = new Date(heatYear, 0, 1 + i);
-    const dateStr = dateToStr(d);
-    const entry = entryMap.get(dateStr);
-    const score = entry ? entry.scores.心情 : undefined;
+    const firstWeekday = new Date(heatYear, m, 1).getDay();
+    for (let i = 0; i < firstWeekday; i++) {
+      const empty = document.createElement('div');
+      empty.className = 'heat-cell empty';
+      container.appendChild(empty);
+    }
 
-    const cell = document.createElement('div');
-    cell.className = 'heat-cell' + (score === undefined ? ' empty' : '');
-    cell.style.background = scoreColor(score);
-    cell.textContent = d.getDate();
-    cell.title = score === undefined
-      ? `${dateStr}（无记录）`
-      : `${dateStr} 心情 ${score} 分`;
-    if (score !== undefined) cell.onclick = () => openEntry(dateStr);
-    container.appendChild(cell);
+    const daysInMonth = new Date(heatYear, m + 1, 0).getDate();
+    for (let d = 1; d <= daysInMonth; d++) {
+      const dateStr = dateToStr(new Date(heatYear, m, d));
+      const entry = entryMap.get(dateStr);
+      const emoji = entry ? entry.emoji : undefined;
+      const score = entry ? entry.scores.心情 : undefined;
+      const hasEntry = !!entry;
+
+      const cell = document.createElement('div');
+      cell.className = 'heat-cell' + (hasEntry ? '' : ' empty');
+      cell.style.background = scoreColor(score);
+      cell.textContent = emoji || '';
+      cell.title = hasEntry
+        ? `${dateStr}${score !== undefined ? ' 心情 ' + score + ' 分' : ''}`
+        : `${dateStr}（无记录）`;
+      if (hasEntry) cell.onclick = () => openEntry(dateStr);
+      container.appendChild(cell);
+    }
   }
 }
 

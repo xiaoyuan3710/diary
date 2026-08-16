@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
   <title>心情日记</title>
   <meta name="description" content="记录今天的心情，回望往年的这一天">
-  <meta name="theme-color" content="#f7f3ee">
+  <meta name="theme-color" content="#4a3a2e">
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
   <link rel="stylesheet" href="style.css">
@@ -21,28 +21,25 @@
     </header>
 
     <!-- 情绪选择 -->
-    <section class="card">
-      <h2 class="card-title">今天的心情</h2>
+    <section class="paper">
+      <h2 class="paper-title">今天的心情</h2>
       <div class="emoji-row" id="emoji-row"></div>
     </section>
 
     <!-- 打分 -->
-    <section class="card">
-      <h2 class="card-title">给自己打个分 <span class="hint">（可跳过）</span></h2>
+    <section class="paper">
+      <h2 class="paper-title">给自己打个分 <span class="hint">（可跳过）</span></h2>
       <div class="scores" id="scores"></div>
     </section>
 
-    <!-- 正文 -->
-    <section class="card">
-      <h2 class="card-title">写点什么</h2>
+    <!-- 文字 + 图片（合并在一页里） -->
+    <section class="paper diary-page">
+      <h2 class="paper-title">写点什么</h2>
       <textarea id="diary-text" class="diary-text" placeholder="今天发生了什么？此刻在想什么？……"></textarea>
-    </section>
-
-    <!-- 照片 -->
-    <section class="card">
-      <h2 class="card-title">照片 <span class="hint">（可选）</span></h2>
-      <div class="photo-grid" id="photo-grid"></div>
-      <button class="btn-secondary" id="add-photo-btn">📷 添加照片</button>
+      <div class="photo-area">
+        <div class="photo-grid" id="photo-grid"></div>
+        <button class="photo-add" id="add-photo-btn" type="button">＋</button>
+      </div>
       <input type="file" id="photo-input" accept="image/*" multiple hidden>
     </section>
 
@@ -51,8 +48,8 @@
     </div>
 
     <!-- 往年今日 -->
-    <section class="card past-card">
-      <h2 class="card-title">📜 往年今日</h2>
+    <section class="paper past-card">
+      <h2 class="paper-title">📜 往年今日</h2>
       <div id="past-today"></div>
     </section>
   </main>
@@ -64,7 +61,7 @@
       <div class="year-label" id="heat-year">2026</div>
       <button class="year-btn" id="heat-year-next">›</button>
     </header>
-    <section class="card">
+    <section class="paper">
       <div class="heat-legend">
         <span>低落</span>
         <div class="legend-colors" id="heat-legend-colors"></div>
@@ -91,7 +88,7 @@
       <div class="year-label" id="hist-month">2026年8月</div>
       <button class="year-btn" id="hist-month-next">›</button>
     </header>
-    <section class="card">
+    <section class="paper">
       <div class="cal-weekdays">
         <span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span>
       </div>
@@ -104,15 +101,15 @@
     <header class="view-header">
       <div class="view-title">⚙️ 设置</div>
     </header>
-    <section class="card">
-      <h2 class="card-title">数据备份</h2>
+    <section class="paper">
+      <h2 class="paper-title">数据备份</h2>
       <p class="desc">所有日记只存在这台手机的浏览器里。如果你清除浏览器数据、或更换手机，日记会丢失。请定期导出备份。</p>
       <button class="btn-secondary" id="export-btn">⬇️ 导出全部数据</button>
       <button class="btn-secondary" id="import-btn">⬆️ 导入备份</button>
       <input type="file" id="import-input" accept="application/json,.json" hidden>
     </section>
-    <section class="card">
-      <h2 class="card-title">关于</h2>
+    <section class="paper">
+      <h2 class="paper-title">关于</h2>
       <p class="desc">心情日记 · 记录今天，回望往年。数据完全本地保存，无账号、无云端、无广告。</p>
     </section>
   </main>
