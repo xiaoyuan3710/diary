@@ -1,0 +1,25 @@
+{
+  "name": "心情日记",
+  "short_name": "心情日记",
+  "description": "记录今天的心情，回望往年的这一天",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f7f3ee",
+  "theme_color": "#f7f3ee",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
